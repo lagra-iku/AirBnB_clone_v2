@@ -68,7 +68,8 @@ class HBNBCommand(cmd.Cmd):
 
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is '}' and type(eval(pline)) is dict:
+                    if pline[0] is '{' and pline[-1] is '}'\
+                            and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -232,18 +233,17 @@ class HBNBCommand(cmd.Cmd):
         args = args.partition(" ")
         if args[0]:
             c_name = args[0]
-        else:  
+        else:
             print("** class name missing **")
             return
-
-        if c_name not in HBNBCommand.classes:  
+        if c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
         args = args[2].partition(" ")
         if args[0]:
             c_id = args[0]
-        else:  
+        else:
             print("** instance id missing **")
             return
 
@@ -255,13 +255,13 @@ class HBNBCommand(cmd.Cmd):
 
         if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
             kwargs = eval(args[2])
-            args = []  
+            args = []
             for k, v in kwargs.items():
                 args.append(k)
                 args.append(v)
-        else:  
+        else:
             args = args[2]
-            if args and args[0] is '\"':  
+            if args and args[0] is '\"':
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -283,23 +283,23 @@ class HBNBCommand(cmd.Cmd):
 
         for i, att_name in enumerate(args):
             if (i % 2 == 0):
-                att_val = args[i + 1]  
-                if not att_name:  
+                att_val = args[i + 1]
+                if not att_name:
                     print("** attribute name missing **")
                     return
-                if not att_val:  
+                if not att_val:
                     print("** value missing **")
                     return
-                
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
 
-        new_dict.save()  
+        new_dict.save()
 
     def help_update(self):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
