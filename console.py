@@ -10,8 +10,8 @@ from models.place import Place
 from models.state import State
 from models.city import City
 """from models.amenity import Amenity
-from models.review import Review
 """
+from models.review import Review
 from shlex import split
 
 
@@ -24,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
     classes = {
             'BaseModel': BaseModel, 'User': User,
                'State': State, 'City': City,
-               'Place': Place
+               'Place': Place, 'Review': Review
               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
