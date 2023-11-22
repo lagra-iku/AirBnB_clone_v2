@@ -2,14 +2,18 @@
 """ Console Module """
 import cmd
 import sys
+from models import storage
+from datetime import datetime
 from models.base_model import BaseModel
-from models.__init__ import storage
-from models.user import User
+"""from models.user import User
 from models.place import Place
+"""
 from models.state import State
 from models.city import City
-from models.amenity import Amenity
+"""from models.amenity import Amenity
 from models.review import Review
+"""
+from shlex import split
 
 
 class HBNBCommand(cmd.Cmd):
@@ -19,9 +23,8 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
+               'BaseModel': BaseModel,
+               'State': State, 'City': City
               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
@@ -113,9 +116,31 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
         try:
+            if not arg:
+                raise SyntaxError()
+            my_list = arg.split(" ")
+            obj = eval("{}()".format(my_list[0]))
+            print("{}".format(obj.id))
+            for num in range(1, len(my_list)):
+                my_list[num] = my_list[num].replace('=', ' ')
+                attributes = split(my_list[num])
+                attributes[1] = attributes[1].replace('_', ' ')
+                try:
+                    var = eval(attributes[1])
+                    attributes[1] = var
+                except:
+                    pass
+                if type(attributes[1]) is not tuple:
+                    setattr(obj, attributes[0], attributes[1])
+            obj.save()
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
+        """try:
             if not args:
                 raise SyntaxError()
             arg_list = args.split(" ")
@@ -132,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         new_instance = HBNBCommand.classes[arg_list[0]](**kw)
         new_instance.save()
-        print(new_instance.id)
+        print(new_instance.id)"""
 
     def help_create(self):
         """ Help information for the create method """
@@ -325,6 +350,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from models.base_model import BaseModel
+"""from models.user import User"""
+from models.state import State
+from models.city import City
+"""from models.amenity import Amenity
+from models.place import Place
+from models.review import Review"""
+import shlex
 
 
 class FileStorage:
@@ -16,7 +24,8 @@ class FileStorage:
             cls = eval(cls)
         if not isinstance(cls, type):
             raise TypeError("cls TypeError.")
-        cls_dict = {k: v for k, v in self.__objects.items() if isinstance(v, cls)}
+        cls_dict = {k: v for k, v in self.__objects.items()
+                    if isinstance(v, cls)}
         return cls_dict
 
     def new(self, obj):
@@ -34,25 +43,25 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
+        """from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
         from models.state import State
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
+        """
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+                    'BaseModel': BaseModel,
+                    'State': State, 'City': City
+                    }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 

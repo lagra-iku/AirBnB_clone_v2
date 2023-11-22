@@ -3,11 +3,10 @@
 from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String
+from sqlalchemy import Column, Integer, String
 import models
+from models.city import City
 import shlex
-
-Base = declarative_base()
 
 
 class State(BaseModel, Base):
@@ -15,8 +14,8 @@ class State(BaseModel, Base):
 
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities_list = relationship("City", cascade='all, delete, delete-orphan',
-                               backref="state")
+    cities = relationship("City", cascade='all, delete, delete-orphan',
+                          backref="state")
 
     @property
     def cities(self):
