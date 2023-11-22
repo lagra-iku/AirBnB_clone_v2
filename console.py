@@ -22,9 +22,9 @@ class HBNBCommand(cmd.Cmd):
 
     classes = {
             'BaseModel': BaseModel, 'User': User,
-               'State': State, 'City': City,
-               'Place': Place, 'Review': Review,
-               'Amenity': Amenity
+            'State': State, 'City': City,
+            'Place': Place, 'Review': Review,
+            'Amenity': Amenity
               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     var = eval(attributes[1])
                     attributes[1] = var
-                except:
+                except (SyntaxError, NameError):
                     pass
                 if type(attributes[1]) is not tuple:
                     setattr(obj, attributes[0], attributes[1])
@@ -140,24 +140,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-        """try:
-            if not args:
-                raise SyntaxError()
-            arg_list = args.split(" ")
-            kw = {}
-            for arg in arg_list[1:]:
-                arg_splited = arg.split("=")
-                arg_splited[1] = eval(arg_splited[1])
-                if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
-                kw[arg_splited[0]] = arg_splited[1]
-        except SyntaxError:
-            print("** class name missing **")
-        except NameError:
-            print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
-        new_instance.save()
-        print(new_instance.id)"""
 
     def help_create(self):
         """ Help information for the create method """
