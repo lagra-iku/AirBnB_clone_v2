@@ -5,8 +5,8 @@ import sys
 from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
-"""from models.user import User
-from models.place import Place
+from models.user import User
+"""from models.place import Place
 """
 from models.state import State
 from models.city import City
@@ -23,7 +23,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel,
+            'BaseModel': BaseModel, 'User': User,
                'State': State, 'City': City
               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
