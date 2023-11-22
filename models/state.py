@@ -3,7 +3,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, String
 import models
 import shlex
 
@@ -11,28 +11,25 @@ Base = declarative_base()
 
 
 class State(BaseModel, Base):
-    """This class represents the State"""
+    """This is the class for State."""
 
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade='all, delete, delete-orphan',
-                          backref="state")
+    cities_list = relationship("City", cascade='all, delete, delete-orphan',
+                               backref="state")
 
     @property
     def cities(self):
-        """Retrieve a list of associated City instances"""
-        values = models.storage.all()
-        groups = []
-        result = []
-        try:
-            for elements in values:
-                city_info = elements.replace('.', ' ')
-                city_info = shlex.split(city_info)
-                if city_info[0] == 'City':
-                    groups.append(values[elements])
-            for values in groups:
-                if values.state_id == self.id:
-                    result.append(values)
-        except Exception:
-            pass
-        return result
+        """Retrieve a list of associated City instances."""
+        variables = models.storage.all()
+        my_lists = []
+        my_sum = []
+        for values in variables:
+            city_info = values.replace('.', ' ')
+            city_info = shlex.split(city_info)
+            if city_info[0] == 'City':
+                my_lists.append(variables[values])
+        for my_elements in my_lists:
+            if my_elements.state_id == self.id:
+                my_sum.append(my_elements)
+        return my_sum
