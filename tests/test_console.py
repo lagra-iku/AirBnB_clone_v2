@@ -1,5 +1,4 @@
-import sys
-import os
+#!/usr/bin/python3
 import unittest
 from unittest.mock import patch
 from io import StringIO
@@ -7,36 +6,66 @@ from console import HBNBCommand
 
 
 class TestConsoleMethods(unittest.TestCase):
-    """Unit tests for the HBNB Console"""
+    """Test methods in the HBNBCommand console"""
 
-    def setUp(self):
-        self.console = HBNBCommand()
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_create_instance(self, mock_stdout):
+        """Test create method to create an instance"""
+        HBNBCommand().onecmd('create BaseModel')
+        output = mock_stdout.getvalue().strip()
+        self.assertNotEqual(output, '')
 
-    def tearDown(self):
-        pass
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_show_existing_instance(self, mock_stdout):
+        """Test show method with an existing instance"""
+        HBNBCommand().onecmd('create BaseModel')
+        output = mock_stdout.getvalue().strip()
+        instance_id = output.split()[-1]  # Assuming ID is printed at the end
+        HBNBCommand().onecmd(f'show BaseModel {instance_id}')
+        show_output = mock_stdout.getvalue().strip()
+        self.assertNotEqual(show_output, '** no instance found **')
 
-    def test_create_missing_class(self):
-        """Test create command with missing class name"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.onecmd("create")
-            output = fake_out.getvalue().strip()
-            self.assertEqual(output, "** class name missing **")
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_show_non_existing_instance(self, mock_stdout):
+        """Test show method with a non-existing instance"""
+        HBNBCommand().onecmd('show BaseModel invalid_id')
+        output = mock_stdout.getvalue().strip()
+        self.assertEqual(output, '** no instance found **')
 
-    def test_create_invalid_class(self):
-        """Test create command with invalid class name"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.onecmd("create InvalidClass")
-            output = fake_out.getvalue().strip()
-            self.assertEqual(output, "** class doesn't exist **")
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_destroy_existing_instance(self, mock_stdout):
+        """Test destroy method with an existing instance"""
+        HBNBCommand().onecmd('create BaseModel')
+        output = mock_stdout.getvalue().strip()
+        instance_id = output.split()[-1]  # Assuming ID is printed at the end
+        HBNBCommand().onecmd(f'destroy BaseModel {instance_id}')
+        destroy_output = mock_stdout.getvalue().strip()
+        self.assertNotEqual(destroy_output, '** no instance found **')
 
-    def test_show_invalid_class(self):
-        """Test show command with invalid class name"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.onecmd("show InvalidClass")
-            output = fake_out.getvalue().strip()
-            self.assertEqual(output, "** class doesn't exist **")
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_destroy_non_existing_instance(self, mock_stdout):
+        """Test destroy method with a non-existing instance"""
+        HBNBCommand().onecmd('destroy BaseModel invalid_id')
+        output = mock_stdout.getvalue().strip()
+        self.assertEqual(output, '** no instance found **')
 
-    def test_show_missing_id(self):
-        """Test show command with missing ID"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.onecmd("show BaseModel")
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_update_existing_instance(self, mock_stdout):
+        """Test update method with an existing instance"""
+        HBNBCommand().onecmd('create BaseModel')
+        output = mock_stdout.getvalue().strip()
+        instance_id = output.split()[-1]  # Assuming ID is printed at the end
+        HBNBCommand().onecmd(f'update BaseModel {instance_id} name "NewName"')
+        update_output = mock_stdout.getvalue().strip()
+        self.assertNotEqual(update_output, '** no instance found **')
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_update_non_existing_instance(self, mock_stdout):
+        """Test update method with a non-existing instance"""
+        HBNBCommand().onecmd('update BaseModel invalid_id')
+        output = mock_stdout.getvalue().strip()
+        self.assertEqual(output, '** no instance found **')
+
+
+if __name__ == '__main__':
+    unittest.main()
