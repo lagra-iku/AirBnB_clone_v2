@@ -9,9 +9,10 @@ import models
 
 
 class Amenity(BaseModel, Base):
-    """
-    Class Amenity
+    """Amenity class that inherits from BaseModel and Base
+    Attributes:
+        name: an instance of the name to be created
     """
     __tablename__ = "amenities"
+    place_amenities = relationship("Place", secondary=place_amenity)
     name = Column(String(128), nullable=False)
-    place_amenities = relationship("Place", secondary="place_amenity")
