@@ -29,7 +29,7 @@ def var_text(text):
     route with text variable
     """
     text = text.replace('_', ' ')
-    return f'C {escape(text)}'
+    return ("C {}".format(escape(text)))
 
 
 if __name__ == "__main__":
