@@ -63,9 +63,7 @@ def var_evenodd(n):
 
 @app.route('/states_list')
 def call_States():
-    """ 
-    display a html page
-    """
+    """display a html page"""
     lista = []
     dic = storage.all("State")
     for elem in dic:
