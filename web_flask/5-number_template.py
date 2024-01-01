@@ -50,7 +50,7 @@ def var_num(n):
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def var_numtemp(n):
     """Display html page"""
-    return render_template('5-number.html', name=n)
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == "__main__":
