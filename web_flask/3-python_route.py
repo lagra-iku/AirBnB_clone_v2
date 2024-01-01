@@ -32,12 +32,11 @@ def var_text(text):
     text = text.replace('_', ' ')
     return ("C {}".format(escape(text)))
 
+
 @app.route('/python/')
 @app.route('/python/<text>', strict_slashes=False)
 def var_python(text='is cool'):
-    """ 
-    Route with text variable
-    """
+    """route with text variable"""
     text = text.replace('_', ' ')
     return ("Python {}".format(escape(text)))
 
