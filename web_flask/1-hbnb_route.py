@@ -16,12 +16,12 @@ def hello_hbnb():
     return 'Hello HBNB!'
 
 
-@app.route('/', strict_slashes=False)
+@app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """
     print HBNB
     """
-    return 'Hello HBNB!'
+    return 'HBNB'
 
 
 if __name__ == "__main__":
